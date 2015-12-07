@@ -4,7 +4,7 @@ import com.intellij.psi.PsiReference
 import org.rust.lang.core.psi.RustCompositeElement
 import org.rust.lang.core.psi.RustNamedElement
 
-interface RustReference : PsiReference {
+interface RustReference : PsiReference  {
 
     override fun getElement(): RustCompositeElement
 

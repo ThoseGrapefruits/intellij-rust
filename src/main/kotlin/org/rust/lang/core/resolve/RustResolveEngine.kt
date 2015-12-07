@@ -1,16 +1,30 @@
 package org.rust.lang.core.resolve
 
+import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.util.PsiTreeUtil
 import org.rust.lang.core.psi.*
 import org.rust.lang.core.psi.util.containingMod
 import org.rust.lang.core.psi.util.isBefore
 import org.rust.lang.core.psi.util.useDeclarations
+import org.rust.lang.core.resolve.ref.RustReference
 import org.rust.lang.core.resolve.scope.RustResolveScope
-import org.rust.lang.core.resolve.scope.resolveWith
 import org.rust.lang.core.resolve.util.RustResolveUtil
 import java.util.*
 
-object RustResolveEngine {
+
+abstract class RustQualifiedReferenceImplMixin<T : RustQualifiedReferenceElement>(element: T,
+                                                                                  rangeInElement: TextRange?,
+                                                                                  soft: Boolean)
+    : PsiReferenceBase<T>(element, rangeInElement, soft)
+    , RustReference {
+
+    override fun resolve(): RustNamedElement?
+            = RustResolveEngine.resolve(element).element
+}
+
+private object RustResolveEngine {
 
     open class ResolveResult(elem: RustNamedElement?) : com.intellij.psi.ResolveResult {
 
@@ -198,4 +212,13 @@ object RustResolveEngine {
             }
         }
     }
+}
+
+//
+// Extension points
+//
+
+private fun RustResolveScope.resolveWith(v: RustResolveEngine.ResolveScopeVisitor): RustNamedElement? {
+    this.accept(v)
+    return v.matched
 }

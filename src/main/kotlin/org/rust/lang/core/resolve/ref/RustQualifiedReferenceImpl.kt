@@ -3,18 +3,15 @@ package org.rust.lang.core.resolve.ref
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import org.rust.lang.core.lexer.RustTokenElementTypes
-import org.rust.lang.core.psi.RustNamedElement
 import org.rust.lang.core.psi.RustQualifiedReferenceElement
-import org.rust.lang.core.resolve.RustResolveEngine
+import org.rust.lang.core.resolve.RustQualifiedReferenceImplMixin
 
 
 internal class RustQualifiedReferenceImpl<T : RustQualifiedReferenceElement>(element: T,
                                                                              soft: Boolean = false)
-    : PsiReferenceBase<T>(element, null, soft)
+    : RustQualifiedReferenceImplMixin<T>(element, null, soft)
     , RustReference {
 
-    override fun resolve(): RustNamedElement? =
-            RustResolveEngine.resolve(element).element
 
     override fun getVariants(): Array<out Any> = EMPTY_ARRAY
 
