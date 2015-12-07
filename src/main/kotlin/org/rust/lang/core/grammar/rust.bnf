@@ -219,7 +219,7 @@
     extends     ("alias") = "org.rust.lang.core.psi.impl.RustNamedElementImpl"
 
     implements  ("import_spec") = "org.rust.lang.core.psi.RustNamedElement"
-    extends     ("import_spec") = "org.rust.lang.core.psi.impl.RustNamedElementImpl"
+    mixin       ("import_spec") = "org.rust.lang.core.psi.impl.mixin.RustImportSpecImplMixin"
 
     elementType(".*_bin_expr")   = binary_expr
     elementType(".*_range_expr") = range_expr
